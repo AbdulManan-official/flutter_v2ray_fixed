@@ -43,10 +43,8 @@ jobs:
           gomobile bind -v -androidapi 21 -target=android -trimpath -ldflags='-s -w -buildid= -checklinkname=0' ./
           cp libv2ray.aar $GITHUB_WORKSPACE/android/libs/libv2ray.aar
 
-      - name: Commit and push updated AAR
-        run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add android/libs/libv2ray.aar
-          git commit -m "build: compile libv2ray.aar from ${{ github.event.inputs.tag }} with 16KB page alignment" || echo "No changes to commit"
-          git push origin HEAD:${{ github.ref }}
+      - name: Upload compiled AAR as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libv2ray-16kb-aar
+          path: android/libs/libv2ray.aar
